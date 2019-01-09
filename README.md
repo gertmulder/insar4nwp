@@ -1,14 +1,13 @@
-# webraster
+# insar4nwp
 
-Example of using [geotiff.js](https://github.com/constantinius/geotiff.js), [plotty](https://github.com/santilland/plotty) and [OpenLayers 4](https://openlayers.org) to display GeoTIFF in the browser.
+This site is developed to show time-series of InSAR imagery, HARMONIE weather model simulations or radar data and rainfall radar side by side. To do so, all three data types were regridded to the same projection.
+Data presented on this website is free to use, please refer to [Paper reference] if you want to use this data. 
 
-## Motivation
+# ploty.js, geotiff.js
 
-While GeoTIFF files are usually large and impractical to send over the wire, there are still use cases for rendering GeoTIFFs directly in the browser, especially in thematic mapping. Sometimes a low-resolution TIFF will be orders of magnitude smaller than bunch of rendered PNG tiles. This is a minimalistic example of integrating geotiff.js, Plotty and OpenLayers 4 in order to display an SRTM elevation model in GeoTIFF format on a web map.
-
-For more functionality including changing color palette and display range, visit the [eox.at](https://eox.at/tag/geotiff/) website.
+I would like to give credits to the developers of these packages, which made the basic design of this possible.
 
 ## Demo
 
-[https://pbabik.github.io/webraster/](https://pbabik.github.io/webraster/)
+[https://gertmulder.github.io/insar4nwp/](https://gertmulder.github.io/insar4nwp/)
 
