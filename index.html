@@ -4,10 +4,10 @@
     <meta charset="utf-8"/>
     <title>plottygeotiff</title>
     
-    <script src="dist/plotty.min.js"></script>
-    <script src="dist/nouislider.js"></script>
-    <script src="dist/geotiffjs/geotiff.browserify.js"></script>
-    <script src="dist/ol-debug.js"></script>
+    <script src="lib/plotty.min.js"></script>
+    <script src="lib/nouislider.js"></script>
+    <script src="lib/geotiffjs.js"></script>
+    <script src="lib/ol/build/ol-debug.js"></script>
     <script src="olGeoTiff_07.js"></script>
 
     <!-- jquery is NOT required and only used for handling the user input... just lazyness :) -->
@@ -84,7 +84,7 @@
     // define the wms layer
       var wmslayer_s2 = new ol.layer.Tile({
         source: new ol.source.WMTS({
-          url: 'https://data.eox.at/geotiff.js-blog/wmts_simple/s2/{TileMatrix}/{TileRow}/{TileCol}.tif',
+          url: 'https://github.com/gertmulder/insar4nwp/data/unwrap_ml_10_40.raw.tiff',
           projection,
           tileGrid: new ol.tilegrid.WMTS({
             origin: ol.extent.getTopLeft(projectionExtent),
@@ -127,8 +127,8 @@
         ],
         view: new ol.View({
           projection,
-          center: [16.411407470703125, 48.27875518798828],
-          zoom: 12,
+          center: [5, 52],
+          zoom: 10,
           maxZoom: 14,
           minZoom: 3
         }),
@@ -141,21 +141,26 @@
 
     // setup datafunctions
       var datafunctions = {};
-      datafunctions['NDVI'] = function(b) {
-        if(b[1]+b[2]+b[3]+b[4]==0) return 10; // return 10 as nodata value
-        return ( b[4] - b[3] ) / ( b[4] + b[3] ); // otherwise return NDVI
+      datafunctions['wrapped'] = function(b) {
+        return ( b[1] / 3.1415 * 0.014); // otherwise return NDVI
       };
-      datafunctions['NDI45'] = function(b) {
-        if(b[1]+b[2]+b[3]+b[4]==0) return 10; // return 10 as nodata value
-        return ( b[4] - b[1] ) / ( b[4] + b[1] ); // otherwise return NDVI
+      datafunctions['unwrapped'] = function(b) {
+        return ( b[2] / 3.1415 * 0.014 ); // otherwise return NDVI
       };
-
+      datafunctions['harmonie'] = function(b) {
+        return ( b[3] ); // otherwise return NDVI
+      };
+      datafunctions['coherence'] = function(b) {
+        return ( b[4] / 10 ); // otherwise return NDVI
+      };
+      
+      
     // olGeoTiff setup
       var olgt_s2map = new olGeoTiff(wmslayer_s2);
-      olgt_s2map.plotOptions.domain = [-0.2, 0.2];
-      olgt_s2map.plotOptions.noDataValue = 10;
+      olgt_s2map.plotOptions.domain = [-0.01, 0.01];
+      olgt_s2map.plotOptions.noDataValue = 1000;
       olgt_s2map.plotOptions.palette = 'blackbody';
-      olgt_s2map.plotOptions.dataFunction = datafunctions['NDVI'];
+      olgt_s2map.plotOptions.dataFunction = datafunctions['wrapped'];
 
     // handle user input
       $(document).ready(function() {
@@ -167,7 +172,7 @@
           noUiSlider.create(slider, {
             start: olgt_s2map.plotOptions.domain,
             connect: true,
-            range: { 'min': -1, 'max': 1 },
+            range: { 'min': -0.10, 'max': 0.10 },
             tooltips: true,
           });
 
