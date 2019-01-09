@@ -86,7 +86,7 @@
     // define the wms layer
       var wmslayer_s2 = new ol.layer.Tile({
         source: new ol.source.WMTS({
-          url: 'https://github.com/gertmulder/insar4nwp/data/interferogram_ml_10_40.raw.tiff',
+          url: './data/interferogram_ml_10_40.raw.tiff',
           projection,
           tileGrid: new ol.tilegrid.WMTS({
             origin: ol.extent.getTopLeft(projectionExtent),
